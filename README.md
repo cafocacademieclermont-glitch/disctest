@@ -152,6 +152,8 @@ jamais dans la page. Deux façons d'avoir la vraie page :
   (`guide-formateur-profils-disc.md`) restera lui affiché en Markdown par GitHub, comme
   aujourd'hui — cette activation ne change que le rendu des fichiers `.html`.
 
+  https://cafocacademieclermont-glitch.github.io/disctest/portrait-session-formateur.html
+
 ## Déployer gratuitement, sans serveur (Streamlit Community Cloud)
 
 1. Créez un compte sur [share.streamlit.io](https://share.streamlit.io) (gratuit,
