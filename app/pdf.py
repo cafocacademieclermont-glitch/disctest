@@ -137,6 +137,12 @@ def build_pdf(report: dict, results: dict) -> BytesIO:
         flow.append(Table([[Image(image, width=76 * mm, height=76 * mm), table]],
                           colWidths=[80 * mm, 84 * mm],
                           style=TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP")])))
+        flow.append(Paragraph(
+            "Comment lire ce point. Sa direction indique le mélange de vos deux dimensions les "
+            "plus fortes. Sa distance au centre indique l'intensité du profil : proche du centre, "
+            "il est plus situationnel ; loin du centre, il est marqué. Les anneaux (situationnelle "
+            "/ modérée / marquée) reprennent les seuils utilisés dans le texte du rapport.",
+            s["muted"]))
         flow.append(Spacer(1, 6))
         flow.append(Paragraph(_clean(disc["order_claim"]), s["body"]))
         flow.append(Paragraph(_clean(disc["confidence_caveat"]), s["muted"]))
@@ -145,9 +151,24 @@ def build_pdf(report: dict, results: dict) -> BytesIO:
             flow.append(Paragraph(_clean(claim["text"]), s["body"]))
         flow.append(Paragraph("Rythme et attention", s["h3"]))
         flow.append(Paragraph(_clean(disc["tempo"]), s["body"]))
+        if disc.get("time_relationship"):
+            flow.append(Paragraph("Votre rapport au temps", s["h3"]))
+            flow.append(Paragraph(_clean(disc["time_relationship"]), s["body"]))
         flow.append(Paragraph("Avec qui vous êtes le plus difficile à travailler", s["h3"]))
         for who, text in disc["friction"]:
             flow.append(Paragraph(f"<b>Pour un collègue {_clean(who)}.</b> {_clean(text)}", s["body"]))
+
+        flow.append(Paragraph("Détail du style", s["h3"]))
+        for label, key in [
+            ("Forces naturelles", "strengths"),
+            ("Axes de progrès", "challenges"),
+            ("Comment communiquer avec vous", "communication"),
+            ("Ce qui vous motive", "motivators"),
+            ("Ce qui déclenche du stress", "stress_triggers"),
+            ("Sous pression", "under_pressure"),
+        ]:
+            if disc.get(key):
+                flow.append(Paragraph(f"<b>{label}.</b> {_clean(disc[key])}", s["body"]))
 
     if "strain" in report:
         strain = report["strain"]

@@ -40,12 +40,20 @@ def circumplex(normalized: dict[str, float], adaptive: dict[str, float] | None =
         ax.bar(x=angle, height=1.0, width=np.pi / 2, bottom=0.0,
                color=ui.STYLE_COLOURS[style], alpha=0.07, edgecolor="none")
 
+    # The rings mark the actual intensity thresholds used in the text report
+    # (see assessment/scoring/disc.py) rather than arbitrary quartiles, so the
+    # graduation itself carries meaning: which ring the point clears is the
+    # same test that produced the "Situationnelle / Modérée / Marquée" label.
     grid = np.linspace(0, 2 * np.pi, 180)
-    for radius in (0.25, 0.5, 0.75):
+    for radius in (0.25, 0.55):
         ax.plot(grid, [radius] * len(grid), color=ui.RULE, linewidth=0.7, zorder=1)
     ax.plot(grid, [1.0] * len(grid), color="#C3CDD7", linewidth=1.0, zorder=2)
     for angle in (0, np.pi / 2, np.pi, 3 * np.pi / 2):
         ax.plot([angle, angle], [0, 1.0], color=ui.RULE, linewidth=0.7, zorder=1)
+
+    for label, r in (("situationnelle", 0.25), ("modérée", 0.55), ("marquée", 1.0)):
+        ax.text(0.045, r, label, fontsize=7.2, color=ui.SLATE, ha="left", va="bottom",
+                 style="italic")
 
     ax.set_xticks(list(STYLE_ANGLES.values()))
     ax.set_xticklabels([LABELS[s] for s in STYLE_ANGLES], fontsize=8.5, color=ui.SLATE)

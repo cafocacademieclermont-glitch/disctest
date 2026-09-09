@@ -49,6 +49,27 @@ def _module_row(module_id: str, default: bool) -> tuple[bool, str]:
     return picked, variant
 
 
+def _identification() -> dict[str, str]:
+    st.markdown('<div class="chan">Avant de commencer</div>', unsafe_allow_html=True)
+    cols = st.columns(2)
+    with cols[0]:
+        prenom = st.text_input("Prénom", key="id_prenom")
+    with cols[1]:
+        nom = st.text_input("Nom", key="id_nom")
+    session = st.text_input(
+        "Session / formation",
+        key="id_session",
+        placeholder="ex. Gestion du temps — 12 novembre",
+    )
+    st.caption(
+        "Votre nom, prénom et votre profil DISC seront transmis à votre formateur pour préparer "
+        "la session. Rien d'autre n'est partagé."
+    )
+    identity = {"prenom": prenom.strip(), "nom": nom.strip(), "session": session.strip()}
+    st.session_state["identity"] = identity
+    return identity
+
+
 def render() -> None:
     ui.masthead(
         "Votre profil DISC, en quelques minutes",
@@ -56,6 +77,9 @@ def render() -> None:
         "chiffres sont trop proches pour trancher.",
         eyebrow="Test · avant la formation",
     )
+
+    identity = _identification()
+    st.write("")
 
     st.markdown('<div class="chan">Test</div>', unsafe_allow_html=True)
     selection: dict[str, str] = {}
@@ -72,21 +96,22 @@ def render() -> None:
             selection[module_id] = variant
             st.session_state["_picked"].add(module_id)
 
-    total_minutes = sum(REGISTRY[m].minutes.get(v, 5) for m, v in selection.items())
     st.markdown("---")
+    missing_identity = not (identity["prenom"] and identity["nom"] and identity["session"])
     if not selection:
         st.markdown(
             f'<p style="color:{ui.SLATE};">Sélectionnez au moins un module pour commencer.</p>',
             unsafe_allow_html=True,
         )
     else:
-        names = ", ".join(REGISTRY[m].title for m in state.resolve_order(selection))
-        st.markdown(
-            f'<div class="chan">Sélection</div><p style="margin-top:4px;">{html.escape(names)} '
-            f'<span class="num" style="color:{ui.SLATE};">· ≈ {total_minutes} min au total</span></p>',
-            unsafe_allow_html=True,
-        )
-        if st.button("Commencer", key="begin", use_container_width=True, type="primary"):
+        if missing_identity:
+            st.markdown(
+                f'<p style="color:{ui.SLATE};font-size:0.9rem;">Renseignez votre prénom, nom et '
+                f'la session ci-dessus pour activer le bouton.</p>',
+                unsafe_allow_html=True,
+            )
+        if st.button("Commencer", key="begin", use_container_width=True, type="primary",
+                      disabled=missing_identity):
             state.build_queue(selection)
             st.session_state.stage = "running"
             st.rerun()

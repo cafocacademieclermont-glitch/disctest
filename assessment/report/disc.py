@@ -133,4 +133,5 @@ def narrative(result, confidence: dict, descriptions: dict) -> dict:
         "motivators": style_info.get("motivators", ""),
         "stress_triggers": style_info.get("stress_triggers", ""),
         "under_pressure": style_info.get("under_pressure", ""),
+        "time_relationship": style_info.get("time_relationship", ""),
     }

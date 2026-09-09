@@ -33,15 +33,26 @@ CSS = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
+/* Base type scale bumped up: this is read on trainees' own screens, often
+   projected or read quickly before a training session, so body copy and the
+   test questions need to be comfortably legible rather than compact. Since
+   almost every size below is in rem, scaling the root percentage scales the
+   whole app proportionally in one place. */
+html {{ font-size: 118%; }}
+
 .stApp {{ background: {PAPER}; }}
 /* Streamlit's header is fixed and overlays the top of the page, so the first
    line needs to clear it rather than slide underneath. */
 [data-testid="stHeader"] {{ background: transparent; }}
-.block-container {{ max-width: 880px; padding-top: 4.75rem; padding-bottom: 4rem; }}
+.block-container {{ max-width: 920px; padding-top: 4.75rem; padding-bottom: 4rem; }}
 
 html, body, [class*="css"], .stMarkdown, .stRadio label {{
     font-family: 'Source Sans 3', system-ui, sans-serif;
     color: {INK};
+    font-size: 1.05rem;
+}}
+.stMarkdown p, .panel p, [data-testid="stMarkdownContainer"] p {{
+    font-size: 1.05rem; line-height: 1.62;
 }}
 h1, h2, h3, h4 {{ font-family: 'Archivo', system-ui, sans-serif; letter-spacing: -0.015em; }}
 
@@ -114,10 +125,10 @@ h1, h2, h3, h4 {{ font-family: 'Archivo', system-ui, sans-serif; letter-spacing:
 
 /* ---- question screen */
 .qprompt {{
-    font-family: 'Archivo', sans-serif; font-size: 1.42rem; font-weight: 500;
-    line-height: 1.38; margin: 0.2rem 0 0.15rem 0;
+    font-family: 'Archivo', sans-serif; font-size: 1.58rem; font-weight: 500;
+    line-height: 1.4; margin: 0.2rem 0 0.15rem 0;
 }}
-.qframe {{ color: {SLATE}; font-size: 0.95rem; font-style: italic; margin-bottom: 1.4rem; }}
+.qframe {{ color: {SLATE}; font-size: 1.02rem; font-style: italic; margin-bottom: 1.4rem; }}
 .qcard {{ animation: rise 220ms ease-out; }}
 @keyframes rise {{ from {{ opacity: 0; transform: translateY(5px); }} to {{ opacity: 1; transform: none; }} }}
 @media (prefers-reduced-motion: reduce) {{ .qcard {{ animation: none; }} }}
@@ -144,14 +155,16 @@ h1, h2, h3, h4 {{ font-family: 'Archivo', system-ui, sans-serif; letter-spacing:
     transition: border-color 120ms ease, background 120ms ease;
 }}
 /* The five-point scale is tighter than a two-way choice, so it gets a smaller
-   type size and is held to a single line each. */
+   type size. French labels ("Pas du tout d'accord", "Tout à fait d'accord")
+   run longer than the original English ones, so each cell wraps onto two
+   lines rather than forcing one line and overflowing into its neighbour. */
 .stRadio > div[role="radiogroup"]:has(> label:nth-child(5)) {{ gap: 6px; }}
 .stRadio > div[role="radiogroup"]:has(> label:nth-child(5)) > label {{
-    padding: 10px 7px; font-size: 0.82rem; align-items: center;
+    padding: 11px 8px; font-size: 0.92rem; align-items: center;
+    white-space: normal; text-align: center; word-break: break-word;
 }}
-.stRadio > div[role="radiogroup"]:has(> label:nth-child(5)) > label,
 .stRadio > div[role="radiogroup"]:has(> label:nth-child(5)) > label div {{
-    white-space: nowrap;
+    white-space: normal;
 }}
 .stRadio > div[role="radiogroup"] > label:hover {{ border-color: {SIGNAL}; background: #FBFDFE; }}
 .stRadio > div[role="radiogroup"] > label:focus-within {{ outline: 2px solid {INK}; outline-offset: 1px; }}

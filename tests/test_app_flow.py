@@ -84,10 +84,22 @@ def test_picker_offers_the_disc_module_and_starts_the_queue():
     app = _app()
     keys = {c.key for c in app.checkbox}
     assert keys == {"pick_disc_natural"}
+    app.text_input(key="id_prenom").set_value("Ada")
+    app.text_input(key="id_nom").set_value("Lovelace")
+    app.text_input(key="id_session").set_value("Gestion du temps — test")
+    app.run()
     app.button(key="begin").click()
     app.run()
     assert app.session_state.stage == "running"
     assert len(app.session_state.flat) == 40
+
+
+def test_begin_button_is_disabled_without_identification():
+    """A browser user cannot click a disabled button at all — this is the
+    guarantee that the test cannot start before a name and session are given."""
+    app = _app()
+    assert app.button(key="begin").disabled
+    assert app.session_state.stage == "picker"
 
 
 # --------------------------------------------------------------------- runner

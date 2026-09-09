@@ -15,7 +15,7 @@ from assessment.scoring.stress import MODE_BLURBS, MODE_LABELS
 from assessment.types import LIKERT_OPTIONS
 
 from . import components as ui
-from . import plots, state
+from . import plots, sheet_sync, state
 from .pdf import build_pdf
 
 
@@ -86,6 +86,14 @@ def _disc_section(report: dict) -> None:
             plots.circumplex(summary["normalized"], report.get("adaptive", {}).get("normalized")),
             use_container_width=True,
         )
+        st.caption(
+            "Comment lire ce point. Sa **direction** indique le mélange de vos deux dimensions "
+            "les plus fortes (par exemple entre Influence et Dominance). Sa **distance au centre** "
+            "indique l'intensité du profil : proche du centre, votre profil est plus situationnel "
+            "et varie selon le contexte ; loin du centre, il est marqué et se manifeste de façon "
+            "plus constante. Les anneaux (situationnelle / modérée / marquée) sont les mêmes seuils "
+            "que ceux utilisés dans le texte du rapport."
+        )
     with right:
         st.markdown('<div class="chan">Scores par dimension · ± une erreur-type</div>',
                     unsafe_allow_html=True)
@@ -107,6 +115,8 @@ def _disc_section(report: dict) -> None:
             _likert_evidence(claim["evidence"])
 
     ui.panel("Rythme et attention", f'<p>{disc["tempo"]}</p>')
+    if disc.get("time_relationship"):
+        ui.panel("Votre rapport au temps", f'<p>{html.escape(disc["time_relationship"])}</p>')
     ui.panel("Où vous êtes le plus efficace", f'<p>{html.escape(disc["environment"])}</p>')
 
     friction = "".join(
@@ -115,17 +125,19 @@ def _disc_section(report: dict) -> None:
     )
     ui.panel("Avec qui vous êtes le plus difficile à travailler", friction)
 
-    with st.expander("Détail du style — forces, difficultés, communication, pression"):
-        for label, key in [
-            ("Forces naturelles", "strengths"),
-            ("Axes de progrès", "challenges"),
-            ("Comment communiquer avec vous", "communication"),
-            ("Ce qui vous motive", "motivators"),
-            ("Ce qui déclenche du stress", "stress_triggers"),
-            ("Sous pression", "under_pressure"),
-        ]:
-            if disc.get(key):
-                st.markdown(f"**{label}.** {disc[key]}")
+    st.markdown('<div class="chan">Détail du style — forces, difficultés, communication, pression</div>',
+                unsafe_allow_html=True)
+    st.write("")
+    for label, key in [
+        ("Forces naturelles", "strengths"),
+        ("Axes de progrès", "challenges"),
+        ("Comment communiquer avec vous", "communication"),
+        ("Ce qui vous motive", "motivators"),
+        ("Ce qui déclenche du stress", "stress_triggers"),
+        ("Sous pression", "under_pressure"),
+    ]:
+        if disc.get(key):
+            st.markdown(f"**{label}.** {disc[key]}")
 
 
 def _strain_section(report: dict) -> None:
@@ -335,6 +347,26 @@ def _pdf_bytes(report: dict, results: dict) -> bytes:
     return st.session_state["_pdf_cache"][1]
 
 
+def _sync_to_trainer(report: dict, results: dict) -> None:
+    """Send this result to the trainer's Google Sheet once, the first time the
+    results page is reached with a finished disc_natural module."""
+    if "disc_natural" not in results or st.session_state.get("_sent_to_trainer"):
+        return
+    identity = st.session_state.get("identity") or {}
+    summary = results["disc_natural"].summary
+    confidence_level = report["confidence"].get("disc_natural", {}).get("level", "Moderate")
+    ok, status = sheet_sync.send_result(identity, report, summary, confidence_level)
+    st.session_state["_sent_to_trainer"] = True
+    st.session_state["_sent_to_trainer_status"] = status
+    if ok:
+        st.caption("✓ Résultat transmis à votre formateur.")
+    elif status != "non_configure":
+        st.caption(
+            "⚠ Le résultat n'a pas pu être transmis automatiquement à votre formateur "
+            "(problème technique). Pensez à lui envoyer votre PDF."
+        )
+
+
 def render() -> None:
     results = st.session_state.results
     if not results:
@@ -350,6 +382,7 @@ def render() -> None:
 
     completed = ", ".join(REGISTRY[m].title for m in results)
     ui.masthead("Votre profil", html.escape(completed), eyebrow="Rapport")
+    _sync_to_trainer(report, results)
     _confidence_banner(report)
 
     if "disc" in report:
@@ -377,7 +410,8 @@ def render() -> None:
     st.markdown('<div class="chan">Conservez vos résultats</div>', unsafe_allow_html=True)
     st.caption(
         "Le fichier JSON contient vos réponses : vous pouvez reprendre plus tard, ajouter des modules, "
-        "ou comparer un futur passage à celui-ci. Rien n'est stocké sur un serveur."
+        "ou comparer un futur passage à celui-ci. En dehors du résultat transmis à votre formateur "
+        "(nom, prénom, session et scores DISC), rien n'est stocké sur un serveur."
     )
     left, middle, right = st.columns(3)
     with left:

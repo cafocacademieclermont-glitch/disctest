@@ -6,7 +6,9 @@ avec sa marge d'incertitude plutôt que des chiffres présentés comme définiti
 
 Pensée pour être envoyée à des stagiaires avant une formation (par exemple une
 formation à la gestion du temps) : chacun passe le test depuis son navigateur,
-télécharge son profil en PDF ou en JSON, et peut vous l'envoyer avant la session.
+voit et télécharge son propre profil (PDF ou JSON), et son résultat est envoyé
+automatiquement dans un Google Sheet partagé avec le ou les formateurs, qui
+peuvent ainsi consulter les profils de tout un groupe avant la session.
 
 ```bash
 pip install -r requirements.txt
@@ -27,8 +29,11 @@ Python 3.10 ou plus récent. Aucun compte, aucun serveur, aucune base de donnée
   avec les raisons quand la confiance est faible.
 - Un export PDF et un export JSON (le JSON permet de reprendre le test plus tard,
   ou de comparer un nouveau passage à un ancien).
-- Rien n'est envoyé à un serveur : tout le calcul se fait dans la session
-  Streamlit de la personne qui passe le test.
+- Avant de commencer, le stagiaire indique son prénom, son nom et la session de
+  formation concernée. À la fin du test, ces informations et son profil DISC
+  sont envoyés dans un Google Sheet que vous partagez avec les formateurs (voir
+  ci-dessous). Tout le calcul du profil, lui, se fait dans la session Streamlit
+  du stagiaire — seul le résultat final part vers le Sheet.
 
 ## Pourquoi seulement le module DISC ?
 
@@ -46,6 +51,31 @@ précises comme le « DISC Classic »® que ce projet n'utilise pas).
 Le code des modules retirés reste dans `assessment/scoring/` et
 `data/*.json` au cas où on voudrait un jour les réactiver avec un contenu
 maison — voir le commentaire dans `assessment/registry.py`.
+
+## Récupérer les résultats des stagiaires (Google Sheet)
+
+Les résultats de chaque stagiaire peuvent s'ajouter automatiquement comme une
+ligne dans un Google Sheet, via un petit script Google Apps Script (le fichier
+`docs/apps_script.gs` fourni dans ce dépôt) — pas besoin de compte Google Cloud
+ni de clé d'API.
+
+1. Créez un Google Sheet vide (par exemple « Résultats DISC »).
+2. Menu **Extensions > Apps Script**, puis remplacez le contenu par celui de
+   `docs/apps_script.gs` (ouvrez ce fichier pour le copier).
+3. Menu **Déployer > Nouveau déploiement**, type **Application Web**,
+   « Exécuter en tant que : Moi », « Qui a accès : Tout le monde ».
+4. Copiez l'URL fournie (elle se termine par `/exec`).
+5. Une fois l'application déployée sur Streamlit Community Cloud (étape
+   suivante), allez dans **Settings > Secrets** de l'application et ajoutez :
+   ```toml
+   SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycb.../exec"
+   ```
+6. Partagez le Google Sheet (pas le script) avec les formateurs qui doivent
+   voir les résultats.
+
+Tant que ce secret n'est pas configuré, l'application fonctionne normalement
+pour les stagiaires (test, profil, PDF) : seul l'envoi automatique vers le
+Sheet est simplement ignoré.
 
 ## Déployer gratuitement, sans serveur (Streamlit Community Cloud)
 
