@@ -15,7 +15,9 @@ pip install -r requirements.txt
 streamlit run disc_style.py
 ```
 
-Python 3.10 ou plus récent. Aucun compte, aucun serveur, aucune base de données.
+Python 3.10 à 3.12 (voir `runtime.txt` — Python 3.13/3.14 déclenchent un bug connu des
+`dataclasses` figées de ce projet sur Streamlit Community Cloud, d'où l'épinglage).
+Aucun compte, aucun serveur, aucune base de données.
 
 ## Ce que ça fait
 
@@ -100,6 +102,11 @@ Sheet est simplement ignoré.
    ce lien que vous envoyez à vos stagiaires avant la formation.
 
 Chaque mise à jour poussée sur GitHub redéploie automatiquement l'application.
+
+Si votre application a déjà été déployée une première fois **avant** l'ajout du fichier
+`runtime.txt`, un simple `git push` ne suffit pas à changer la version de Python déjà
+installée : ouvrez le menu **⋮** de l'application sur share.streamlit.io et choisissez
+**Reboot app** pour qu'elle soit reprovisionnée avec la version épinglée.
 
 ## Mettre le dépôt sur votre GitHub
 

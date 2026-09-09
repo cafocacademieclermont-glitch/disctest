@@ -78,40 +78,43 @@ def render() -> None:
         eyebrow="Test · avant la formation",
     )
 
-    identity = _identification()
-    st.write("")
+    # A form batches the identification fields and the module list so that
+    # "Commencer" reads their current content the moment it is clicked —
+    # no need to press Enter or click into another field first to "commit"
+    # what was just typed, which plain text_input widgets would otherwise
+    # require. Enter still works as a shortcut (enter_to_submit, the form
+    # default) — it just stops being the only way in.
+    with st.form("start_form", border=False):
+        identity = _identification()
+        st.write("")
 
-    st.markdown('<div class="chan">Test</div>', unsafe_allow_html=True)
-    selection: dict[str, str] = {}
-    st.session_state["_picked"] = set()
-    for module_id in CORE_MODULES:
-        picked, variant = _module_row(module_id, default=True)
-        if picked:
-            selection[module_id] = variant
-            st.session_state["_picked"].add(module_id)
+        st.markdown('<div class="chan">Test</div>', unsafe_allow_html=True)
+        selection: dict[str, str] = {}
+        st.session_state["_picked"] = set()
+        for module_id in CORE_MODULES:
+            picked, variant = _module_row(module_id, default=True)
+            if picked:
+                selection[module_id] = variant
+                st.session_state["_picked"].add(module_id)
 
-    for module_id in ADDON_MODULES:
-        picked, variant = _module_row(module_id, default=False)
-        if picked:
-            selection[module_id] = variant
-            st.session_state["_picked"].add(module_id)
+        for module_id in ADDON_MODULES:
+            picked, variant = _module_row(module_id, default=False)
+            if picked:
+                selection[module_id] = variant
+                st.session_state["_picked"].add(module_id)
 
-    st.markdown("---")
-    missing_identity = not (identity["prenom"] and identity["nom"] and identity["session"])
-    if not selection:
-        st.markdown(
-            f'<p style="color:{ui.SLATE};">Sélectionnez au moins un module pour commencer.</p>',
-            unsafe_allow_html=True,
+        st.markdown("---")
+        submitted = st.form_submit_button(
+            "Commencer", key="begin", use_container_width=True, type="primary"
         )
-    else:
-        if missing_identity:
-            st.markdown(
-                f'<p style="color:{ui.SLATE};font-size:0.9rem;">Renseignez votre prénom, nom et '
-                f'la session ci-dessus pour activer le bouton.</p>',
-                unsafe_allow_html=True,
-            )
-        if st.button("Commencer", key="begin", use_container_width=True, type="primary",
-                      disabled=missing_identity):
+
+    if submitted:
+        missing_identity = not (identity["prenom"] and identity["nom"] and identity["session"])
+        if not selection:
+            st.warning("Sélectionnez au moins un module pour commencer.")
+        elif missing_identity:
+            st.warning("Renseignez votre prénom, nom et la session pour commencer.")
+        else:
             state.build_queue(selection)
             st.session_state.stage = "running"
             st.rerun()

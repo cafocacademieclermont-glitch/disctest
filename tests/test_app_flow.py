@@ -88,21 +88,29 @@ def test_picker_offers_the_disc_module_and_starts_the_queue():
     app = _app()
     keys = {c.key for c in app.checkbox}
     assert keys == {"pick_disc_natural"}
+    # The identification fields and the submit button live in one st.form, so
+    # setting all three and clicking Commencer can be queued together and
+    # read in a single run — no intermediate run() is needed to "commit" each
+    # field first, the way plain text_input widgets outside a form would.
     app.text_input(key="id_prenom").set_value("Ada")
     app.text_input(key="id_nom").set_value("Lovelace")
     app.text_input(key="id_session").set_value("Gestion du temps — test")
-    app.run()
     app.button(key="begin").click()
     app.run()
     assert app.session_state.stage == "running"
     assert len(app.session_state.flat) == 40
 
 
-def test_begin_button_is_disabled_without_identification():
-    """A browser user cannot click a disabled button at all — this is the
-    guarantee that the test cannot start before a name and session are given."""
+def test_begin_button_requires_identification_before_advancing():
+    """The Commencer button is inside a form, so it's always clickable (no
+    disabled state to fight with while typing) — the guarantee that the test
+    cannot start without a name and session is enforced after the click
+    instead, via a warning that keeps the stage on "picker"."""
     app = _app()
-    assert app.button(key="begin").disabled
+    app.button(key="begin").click()
+    app.run()
+    assert app.session_state.stage == "picker"
+    assert app.warning
     assert app.session_state.stage == "picker"
 
 
