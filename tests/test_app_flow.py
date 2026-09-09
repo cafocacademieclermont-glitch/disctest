@@ -62,9 +62,13 @@ def _started(modules: dict[str, str], seed: int = 42) -> AppTest:
 
 
 def _answer_current(app: AppTest, choice: int) -> None:
+    """Set the response and re-run once: the Suivant button is disabled until
+    an answer is picked, so its `.disabled` flag must reflect this choice
+    before a caller can click it."""
     item = app.session_state.flat[app.session_state.position]
     radio = app.radio(key=f"resp_{item.uid}")
     radio.set_value(radio.options[min(choice, len(radio.options) - 1)])
+    app.run()
 
 
 def _answer_everything(app: AppTest, choice: int = 3) -> AppTest:
@@ -105,10 +109,10 @@ def test_begin_button_is_disabled_without_identification():
 # --------------------------------------------------------------------- runner
 
 def test_advancing_without_an_answer_is_refused():
+    """The Suivant button cannot be clicked at all until a response is chosen —
+    the same guarantee the disabled Commencer button gives on the picker."""
     app = _started({"disc_natural": "standard"})
-    app.button(key="advance").click()
-    app.run()
-    assert app.warning, "clicking through without a response must warn"
+    assert app.button(key="advance").disabled
     assert app.session_state.position == 0, "the queue must not advance"
     assert not app.session_state.answers
 

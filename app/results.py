@@ -123,21 +123,22 @@ def _disc_section(report: dict) -> None:
         f'<p><b>Pour un collègue {html.escape(who)}.</b> {html.escape(text)}</p>'
         for who, text in disc["friction"]
     )
-    ui.panel("Avec qui vous êtes le plus difficile à travailler", friction)
+    ui.panel("Avec qui il vous est le plus difficile de travailler", friction)
 
-    st.markdown('<div class="chan">Détail du style — forces, difficultés, communication, pression</div>',
-                unsafe_allow_html=True)
-    st.write("")
-    for label, key in [
-        ("Forces naturelles", "strengths"),
-        ("Axes de progrès", "challenges"),
-        ("Comment communiquer avec vous", "communication"),
-        ("Ce qui vous motive", "motivators"),
-        ("Ce qui déclenche du stress", "stress_triggers"),
-        ("Sous pression", "under_pressure"),
-    ]:
-        if disc.get(key):
-            st.markdown(f"**{label}.** {disc[key]}")
+    detail_html = "".join(
+        f"<p><b>{html.escape(label)}.</b> {html.escape(disc[key])}</p>"
+        for label, key in [
+            ("Forces naturelles", "strengths"),
+            ("Axes de progrès", "challenges"),
+            ("Comment communiquer avec vous", "communication"),
+            ("Ce qui vous motive", "motivators"),
+            ("Ce qui déclenche du stress", "stress_triggers"),
+            ("Sous pression", "under_pressure"),
+        ]
+        if disc.get(key)
+    )
+    if detail_html:
+        ui.panel("Détail du style — forces, difficultés, communication, pression", detail_html)
 
 
 def _strain_section(report: dict) -> None:

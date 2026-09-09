@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
 from assessment.scoring.disc import STYLE_ANGLES  # noqa: E402
+from assessment.scoring.disc import _SECTORS as STYLE_SECTORS  # noqa: E402
 
 from . import components as ui  # noqa: E402
 
@@ -48,16 +49,28 @@ def circumplex(normalized: dict[str, float], adaptive: dict[str, float] | None =
     for radius in (0.25, 0.55):
         ax.plot(grid, [radius] * len(grid), color=ui.RULE, linewidth=0.7, zorder=1)
     ax.plot(grid, [1.0] * len(grid), color="#C3CDD7", linewidth=1.0, zorder=2)
-    for angle in (0, np.pi / 2, np.pi, 3 * np.pi / 2):
-        ax.plot([angle, angle], [0, 1.0], color=ui.RULE, linewidth=0.7, zorder=1)
+
+    # Twelve spokes, one per blend (see STYLE_SECTORS in assessment/scoring/disc.py):
+    # the same wheel used everywhere else in the report, so the primary/blend
+    # code you land in here is the same code the text names as your style.
+    for deg in range(0, 360, 30):
+        a = math.radians(deg)
+        heavy = deg % 90 == 0
+        ax.plot([a, a], [0, 1.0], color=ui.RULE if not heavy else "#C3CDD7",
+                 linewidth=0.9 if heavy else 0.6, zorder=1)
+
+    for lo, hi, code in STYLE_SECTORS:
+        mid = math.radians((lo + hi) / 2)
+        ax.text(mid, 1.1, code, fontsize=8.2 if len(code) == 1 else 7.4,
+                 fontweight="600" if len(code) == 1 else "normal",
+                 color=ui.INK if len(code) == 1 else ui.SLATE,
+                 ha="center", va="center")
 
     for label, r in (("situationnelle", 0.25), ("modérée", 0.55), ("marquée", 1.0)):
         ax.text(0.045, r, label, fontsize=7.2, color=ui.SLATE, ha="left", va="bottom",
                  style="italic")
 
-    ax.set_xticks(list(STYLE_ANGLES.values()))
-    ax.set_xticklabels([LABELS[s] for s in STYLE_ANGLES], fontsize=8.5, color=ui.SLATE)
-    ax.tick_params(pad=11)
+    ax.set_xticks([])
     ax.set_yticklabels([])
     ax.grid(False)
     ax.spines["polar"].set_visible(False)

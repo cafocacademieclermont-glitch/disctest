@@ -69,11 +69,12 @@ def render() -> None:
 
     last_overall = st.session_state.position == overall - 1
     label = "Voir mes résultats" if last_overall else "Suivant"
+    no_answer = value is None
 
-    if st.button(label, key="advance", use_container_width=True, type="primary"):
-        if value is None:
-            st.warning("Choisissez une réponse pour continuer.")
-        else:
-            state.record(item.uid, value)
-            state.advance()
-            st.rerun()
+    if st.button(label, key="advance", use_container_width=True, type="primary",
+                 disabled=no_answer):
+        state.record(item.uid, value)
+        state.advance()
+        st.rerun()
+    if no_answer:
+        st.caption("Choisissez une réponse ci-dessus pour activer le bouton.")

@@ -48,7 +48,7 @@
             "motivators": "Excellence de la qualité, décisions fondées sur des données, méthodes de travail structurées, travail de fond en autonomie, standards logiques clairs.",
             "stress_triggers": "Travail bâclé, irrationalité émotionnelle, changements de cap soudains sans données, pression pour rogner sur la qualité.",
             "under_pressure": "Peut sur-analyser les faits, devenir hyper-critique sur des écarts mineurs, ou s'isoler pour tout vérifier lui-même.",
-            "communication_tips": "Soyez précis, logique et appuyez-vous sur des faits et de la documentation. Laissez-lui le temps d'examiner les données avant de demander une décision finale.",
+            "communication_tips": "Soyez précis, logique et appuyez-vous sur des faits et de la documentation. Laissez le temps d'examiner les données avant de demander une décision finale.",
             "growth_advice": "Adoptez la règle des 80/20 pour éviter la paralysie par l'analyse ; retenez qu'un résultat suffisamment bon à temps vaut souvent mieux qu'un résultat parfait trop tard.",
             "time_relationship": "Vous planifiez volontiers et avec précision, mais vous sous-estimez le temps nécessaire pour atteindre le niveau de qualité que vous vous fixez : la vérification, la relecture et le peaufinage grignotent le planning initial. Votre risque principal : la paralysie par l'analyse, qui retarde le passage à l'action, et un planning trop serré qui ne prévoit pas de marge pour l'imprévu. Ce qui vous aide : fixer à l'avance un seuil de qualité suffisant (« assez bon ») pour chaque tâche, et vous accorder un temps limité et minuté pour la vérification plutôt qu'un temps illimité."
         },
@@ -61,7 +61,7 @@
             "motivators": "Initiatives à fort impact, visibilité en tant que leader, avancées rapides, succès reconnu publiquement.",
             "stress_triggers": "Progression lente, manque d'enthousiasme chez les autres, lourdeurs administratives, sentiment d'être bridé.",
             "under_pressure": "Pousse plus fort, exige des solutions rapides, et peut balayer les objections avec passion verbale.",
-            "communication_tips": "Adaptez-vous à son rythme énergique, mettez en avant les résultats stratégiques, et gardez vos points d'étape concis et orientés résultats.",
+            "communication_tips": "Misez sur un rythme énergique, mettez en avant les résultats stratégiques, et gardez vos points d'étape concis et orientés résultats.",
             "growth_advice": "Associez vos idées visionnaires à des responsables d'exécution dédiés, et prenez le temps de vérifier que votre équipe a bien intégré le plan.",
             "time_relationship": "Vous avancez vite et changez facilement de priorité dès qu'une opportunité plus intéressante se présente, ce qui donne un planning vivant mais instable. La combinaison de l'impatience (D) et de l'enthousiasme dispersé (I) fait que vous démarrez plus de choses que vous n'en terminez. Votre risque principal : plusieurs chantiers ouverts en parallèle, et des échéances sous-estimées parce que vous êtes convaincu que « ça ira vite ». Ce qui vous aide : vous engager sur un seul temps fort à la fois et le protéger explicitement des nouvelles idées qui arrivent en cours de route."
         },
@@ -74,7 +74,7 @@
             "motivators": "Leadership social, visibilité forte, projets créatifs stimulants, groupe de soutien enthousiaste.",
             "stress_triggers": "Désapprobation, routines administratives ennuyeuses, manque d'autonomie, scepticisme de parties prenantes clés.",
             "under_pressure": "Devient intensément passionné, cherche à convaincre les résistances par la parole, et pousse vers une résolution rapide.",
-            "communication_tips": "Reconnaissez sa créativité et ses idées, gardez les échanges vivants, et exposez clairement les avantages d'ensemble.",
+            "communication_tips": "Valorisez la créativité et les idées apportées, gardez les échanges vivants, et exposez clairement les avantages d'ensemble.",
             "growth_advice": "Instaurez des points de contrôle opérationnels pour vérifier les détails, et faites tester vos plans par des profils analytiques avant de vous lancer.",
             "time_relationship": "Vous vous engagez vite, porté par l'enthousiasme du moment (I), puis vous imposez le rythme pour que ça avance (D) — ce qui produit des débuts rapides mais un planning construit après coup plutôt qu'avant. Vous avez tendance à dire oui à une échéance avant d'avoir vérifié qu'elle est tenable. Votre risque principal : des engagements pris sous le coup de l'enthousiasme qui deviennent des urgences plus tard. Ce qui vous aide : un temps de vérification de 24h avant de confirmer un délai à quelqu'un d'autre, et un point de suivi régulier pour garder trace de ce qui a été promis."
         },
@@ -87,7 +87,7 @@
             "motivators": "Harmonie d'équipe, relations sincères, réussite collective, envie d'aider les autres à progresser.",
             "stress_triggers": "Hostilité interpersonnelle, cultures froides ou trop transactionnelles, critiques dures, restructuration brutale de l'équipe.",
             "under_pressure": "Cherche à apaiser le conflit à ses propres dépens, peut devenir trop conciliant ou submergé émotionnellement.",
-            "communication_tips": "Adoptez une approche amicale et personnelle. Montrez de la reconnaissance pour sa contribution humaine avant d'aborder les sujets transactionnels.",
+            "communication_tips": "Adoptez une approche amicale et personnelle. Montrez de la reconnaissance pour la dimension humaine avant d'aborder les sujets transactionnels.",
             "growth_advice": "Présentez le retour constructif comme un acte de bienveillance qui aide l'autre à progresser, et préservez vos propres limites d'énergie.",
             "time_relationship": "Votre temps se remplit de sollicitations humaines : une personne qui a besoin d'aide ou d'être écoutée passe facilement devant votre propre planning, par souci d'être présent pour les autres (I et S combinés). Vous avez du mal à refuser une demande, même quand vous êtes déjà chargé. Votre risque principal : un agenda dicté par les besoins des autres plus que par vos propres priorités, et un stock de tâches personnelles qui prend du retard. Ce qui vous aide : réserver à l'avance des créneaux non négociables pour votre propre travail, et vous autoriser à dire « pas maintenant, mais je reviens vers vous à telle heure »."
         },
@@ -112,7 +112,7 @@
             "challenges": "Peut hésiter à adopter des changements soudains, mettre du temps avant d'essayer des méthodes non éprouvées, ou trop s'appuyer sur des façons de faire anciennes.",
             "motivators": "Méthodes de travail ordonnées, critères clairs, planning prévisible, concentration au calme, maîtrise technique.",
             "stress_triggers": "Changements de cap erratiques, raccourcis bâclés, réunions bruyantes et agressives, flou dans les standards.",
-            "under_pressure": "Se replie sur elle-même, devient prudente et se concentre intensément sur la précision des procédures pour reprendre le contrôle.",
+            "under_pressure": "Se replie sur soi, adopte une extrême prudence et se concentre intensément sur la précision des procédures pour reprendre le contrôle.",
             "communication_tips": "Proposez un ordre du jour structuré, des détails écrits clairs, et suffisamment de temps de préparation, sans surprise de dernière minute.",
             "growth_advice": "Entraînez-vous au prototypage rapide et à l'expérimentation ; acceptez qu'une part d'incertitude est inévitable dans les projets qui avancent vite.",
             "time_relationship": "Vous êtes probablement le profil le plus naturellement organisé pour la gestion du temps : constance (S) et méthode (C) se renforcent pour donner un planning stable, respecté et peu sujet aux imprévus auto-infligés. Votre point de vigilance : vous mettez tellement de soin à bien faire les choses dans l'ordre prévu que vous avez du mal à réagir vite quand un changement brutal s'impose, et vous pouvez consacrer trop de temps à peaufiner une tâche secondaire. Ce qui vous aide : garder volontairement une petite marge non planifiée chaque jour pour l'imprévu, et vous autoriser à traiter certaines tâches « au plus simple » plutôt qu'au mieux."

@@ -35,6 +35,16 @@ Python 3.10 ou plus récent. Aucun compte, aucun serveur, aucune base de donnée
   ci-dessous). Tout le calcul du profil, lui, se fait dans la session Streamlit
   du stagiaire — seul le résultat final part vers le Sheet.
 
+## Pour le formateur : les 13 profils en un coup d'œil
+
+[`docs/guide-formateur-profils-disc.md`](docs/guide-formateur-profils-disc.md) rassemble les
+13 profils que l'application peut renvoyer (les 4 styles simples, leurs 8 combinaisons, et le
+profil équilibré), avec pour chacun l'accroche, la description, les forces, les axes de progrès
+et le rapport au temps. Pratique à garder sous la main pendant la session, sans avoir à passer
+le test soi-même pour se rappeler ce que signifie tel ou tel profil. Ce guide est généré à
+partir des mêmes textes que ceux montrés aux stagiaires (`data/disc_descriptions.json`) via
+`python3 scripts/build_trainer_guide.py` — à relancer si vous modifiez les descriptions.
+
 ## Pourquoi seulement le module DISC ?
 
 Le projet d'origine ([dzyla/disc-personality-assessment](https://github.com/dzyla/disc-personality-assessment),

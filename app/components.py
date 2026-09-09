@@ -152,15 +152,19 @@ h1, h2, h3, h4 {{ font-family: 'Archivo', system-ui, sans-serif; letter-spacing:
     flex: 1 1 0; min-width: 0; overflow: visible; margin: 0; padding: 11px 13px;
     background: #FFFFFF; border: 1px solid {RULE}; border-radius: 3px;
     font-size: 0.96rem; line-height: 1.4; align-items: flex-start;
+    justify-content: center;
     transition: border-color 120ms ease, background 120ms ease;
 }}
 /* The five-point scale is tighter than a two-way choice, so it gets a smaller
    type size. French labels ("Pas du tout d'accord", "Tout à fait d'accord")
    run longer than the original English ones, so each cell wraps onto two
-   lines rather than forcing one line and overflowing into its neighbour. */
+   lines rather than forcing one line and overflowing into its neighbour.
+   justify-content centres the radio dot + text as a block within the cell,
+   the same way the "Suivant" button centres its own label below it. */
 .stRadio > div[role="radiogroup"]:has(> label:nth-child(5)) {{ gap: 6px; }}
 .stRadio > div[role="radiogroup"]:has(> label:nth-child(5)) > label {{
     padding: 11px 8px; font-size: 0.92rem; align-items: center;
+    justify-content: center;
     white-space: normal; text-align: center; word-break: break-word;
 }}
 .stRadio > div[role="radiogroup"]:has(> label:nth-child(5)) > label div {{
